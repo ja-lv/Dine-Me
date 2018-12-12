@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.me.dine.dineme"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -43,9 +43,6 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
-
-    //firebase UI
-    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
 }
 
 //firebase

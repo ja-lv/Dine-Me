@@ -11,8 +11,6 @@ import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeRGroup;
 
 import java.util.List;
 
-import com.google.firebase.auth.FirebaseUser;
-
 public class MainViewModel extends AndroidViewModel {
     // Constant for logging
     private static final String TAG = MainViewModel.class.getSimpleName();
@@ -25,10 +23,7 @@ public class MainViewModel extends AndroidViewModel {
     private LiveData<List<DineMeMyGroup>> mDineMeMyGroups;
     private LiveData<List<DineMeMyEvent>> mDineMeMyEvents;
 
-    //firebase user
-    private FirebaseUser mFirebaseUser;
-
-    public MainViewModel(Application application, FirebaseUser firebaseUser){
+    public MainViewModel(Application application){
         super(application);
         mDineMeRepository = new DineMeRepository(application);
 
@@ -37,8 +32,6 @@ public class MainViewModel extends AndroidViewModel {
         mDineMeRGroups = mDineMeRepository.getRecommendedGroups();
         mDineMeMyGroups = mDineMeRepository.getMyGroups();
         mDineMeMyEvents = mDineMeRepository.getMyEvents();
-
-        mFirebaseUser = firebaseUser;
     }
 
     //getters

@@ -39,8 +39,7 @@ public class DineMeRepository {
         mMyEventsDao = db.myEventsDao();
 
         //initiate data, loads the first user
-        List<DineMeMainUser> mainUsers = mMainUserDao.loadAllMainUsers().getValue();
-        if(mainUsers != null) mMainUser = mMainUserDao.loadMainUser(mainUsers.get(0).getId());
+        mMainUser = mMainUserDao.loadMainUser(mMainUserDao.loadAllMainUsers().getValue().get(0).getId());
         mDineMeRGroups = mRGroupsDao.loadAllRGroups();
         mDineMeMyGroups = mMyGroupsDao.loadAllMyGroups();
         mDineMeMyEvents = mMyEventsDao.loadAllMyEvents();
