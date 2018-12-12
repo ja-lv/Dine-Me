@@ -40,4 +40,10 @@ dependencies {
     // Lifecycle components
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+
+    //firebase
+    implementation 'com.google.firebase:firebase-core:16.0.1'
 }
+
+//firebase
+apply plugin: 'com.google.gms.google-services'

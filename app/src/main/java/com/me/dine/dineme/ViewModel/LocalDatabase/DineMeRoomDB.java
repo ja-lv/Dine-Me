@@ -11,9 +11,11 @@ import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.MyEventsDao;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.MyGroupsDao;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.RGroupsDao;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
+import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyEvent;
+import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyGroup;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeRGroup;
 
-@Database(entities = {DineMeMainUser.class, DineMeRGroup.class}, version = 1, exportSchema = false)
+@Database(entities = {DineMeMainUser.class, DineMeRGroup.class, DineMeMyGroup.class, DineMeMyEvent.class}, version = 1, exportSchema = false)
 public abstract class DineMeRoomDB extends RoomDatabase {
     private static final String LOG_TAG = DineMeRoomDB.class.getSimpleName();
     private static final Object LOCK = new Object();

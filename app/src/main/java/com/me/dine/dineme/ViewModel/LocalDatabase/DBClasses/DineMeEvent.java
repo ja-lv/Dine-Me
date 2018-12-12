@@ -6,7 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "events")
+//@Entity(tableName = "events")
 public class DineMeEvent {
     @PrimaryKey(autoGenerate = true)
     private int id;
