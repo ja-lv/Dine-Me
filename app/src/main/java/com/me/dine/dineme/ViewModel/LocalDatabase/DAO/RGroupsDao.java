@@ -30,5 +30,5 @@ public interface RGroupsDao {
     void deleteRGroup(DineMeRGroup dineMeRGroup);
 
     @Query("DELETE FROM recommended_groups")
-    void clearAllRGroups();
+    void deleteAllRGroups();
 }

@@ -46,8 +46,21 @@ public class DineMeRepository {
     public LiveData<DineMeMainUser> getmMainUser(){ return mMainUser; }
 
     //UPDATE
+    public void updateRGroup(DineMeRGroup rGroup){
+        mRGroupsDao.updateRGroup(rGroup);
+    }
+    public void updateMainUser(DineMeMainUser mainUser){
+        mMainUserDao.updateMainUser(mainUser);
+    }
 
     //DELETE
+    //delete all rGroups
+    public void deleteRGroups(){
+        mRGroupsDao.deleteAllRGroups();
+    }
+    public void deleteMainUser(DineMeMainUser mainUser){
+        mMainUserDao.deleteMainUser(mainUser);
+    }
 
 
 }
