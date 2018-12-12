@@ -7,6 +7,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.MainUserDao;
+import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.MyEventsDao;
+import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.MyGroupsDao;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DAO.RGroupsDao;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeRGroup;
@@ -33,4 +35,6 @@ public abstract class DineMeRoomDB extends RoomDatabase {
 
     public abstract MainUserDao mainUserDao();
     public abstract RGroupsDao rGroupsDao();
+    public abstract MyGroupsDao myGroupsDao();
+    public abstract MyEventsDao myEventsDao();
 }
