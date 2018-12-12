@@ -14,8 +14,11 @@ import com.me.dine.dineme.ViewModel.LocalDatabase.DineMeRoomDB;
 import java.util.List;
 
 public class DineMeRepository {
+    //daos
     private MainUserDao mMainUserDao;
     private RGroupsDao mRGroupsDao;
+
+    //data
     private LiveData<DineMeMainUser> mMainUser;
     private LiveData<List<DineMeRGroup>> mDineMeRGroups;
 
@@ -23,5 +26,28 @@ public class DineMeRepository {
         DineMeRoomDB db = DineMeRoomDB.getInstance(application.getApplicationContext());
         mMainUserDao = db.mainUserDao();
         mRGroupsDao = db.rGroupsDao();
+
+        //initiate data, loads the first user
+        mMainUser = mMainUserDao.loadMainUser(mMainUserDao.loadAllMainUsers().getValue().get(0).getId());
+        mDineMeRGroups = mRGroupsDao.loadAllRGroups();
     }
+
+    //CRUD - Create, Read, Update, Delete
+    //CREATE
+    public void insertRGroups(List<DineMeRGroup> rGroups){
+        mRGroupsDao.insertRGroups(rGroups);
+    }
+    public void insertMainUser(DineMeMainUser mainUser){
+        mMainUserDao.insertMainUser(mainUser);
+    }
+
+    //READ getters
+    public LiveData<List<DineMeRGroup>> getRecommendedGroups(){ return mDineMeRGroups; }
+    public LiveData<DineMeMainUser> getmMainUser(){ return mMainUser; }
+
+    //UPDATE
+
+    //DELETE
+
+
 }

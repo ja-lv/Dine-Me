@@ -9,7 +9,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
-
+import java.util.List;
 
 @Dao
 public interface MainUserDao {
@@ -24,4 +24,8 @@ public interface MainUserDao {
 
     @Delete
     void deleteMainUser(DineMeMainUser mainUser);
+
+    //testing purposes, get all users
+    @Query("SELECT * FROM main_user ORDER BY id ASC")
+    LiveData<List<DineMeMainUser>> loadAllMainUsers();
 }

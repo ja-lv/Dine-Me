@@ -20,6 +20,9 @@ public interface RGroupsDao {
     @Insert
     void insertRGroup(DineMeRGroup dineMeRGroup);
 
+    @Insert
+    void insertRGroups(List<DineMeRGroup> dineMeRGroups);
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateRGroup(DineMeRGroup dineMeRGroup);
 
