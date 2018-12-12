@@ -86,6 +86,9 @@ public class DineMeRepository {
     public void deleteMainUser(DineMeMainUser mainUser){
         mMainUserDao.deleteMainUser(mainUser);
     }
+    public void deleteMainUser(){
+        mMainUserDao.deleteMainUser();
+    }
     public void deleteRGroups(){
         mRGroupsDao.deleteAllRGroups();
     }
@@ -94,5 +97,17 @@ public class DineMeRepository {
     }
     public void deleteMyEvents(){
         mMyEventsDao.deleteAllMyEvents();
+    }
+
+    //empty the database
+    public void emptyDataBase(){
+        deleteMainUser();
+        deleteRGroups();
+        deleteMyGroups();
+        deleteMyEvents();
+    }
+
+    public void networkFillDataBase(){
+
     }
 }

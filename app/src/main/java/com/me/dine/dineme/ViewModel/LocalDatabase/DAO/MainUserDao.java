@@ -28,4 +28,7 @@ public interface MainUserDao {
     //testing purposes, get all users
     @Query("SELECT * FROM main_user ORDER BY id ASC")
     LiveData<List<DineMeMainUser>> loadAllMainUsers();
+
+    @Query("DELETE FROM main_user")
+    void deleteMainUser();
 }
