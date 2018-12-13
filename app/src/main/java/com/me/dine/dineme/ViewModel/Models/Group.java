@@ -1,18 +1,19 @@
 package com.me.dine.dineme.ViewModel.Models;
 
+import java.util.Date;
 import java.util.List;
 
 public class Group {
     private String ownerEmail;
     private String name;
     private String description;
-    private String date;
+    private Date date;
     private String imageUrl;
     private List<String> foods;
     private String location;
 
     public Group(){};
-    public Group(String ownerEmail, String name, String description, String date, String imageUrl, String location) {
+    public Group(String ownerEmail, String name, String description, Date date, String imageUrl, String location) {
         this.ownerEmail = ownerEmail;
         this.name = name;
         this.description = description;
@@ -46,11 +47,11 @@ public class Group {
         this.description = description;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

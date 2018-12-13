@@ -2,6 +2,7 @@
     <string name="app_name">Dine me</string>
     <string name="title_home">My Page</string>
     <string name="title_dashboard">My Groups</string>
+    <string name="title_my_groups">My Groups</string>
     <string name="title_events">Events</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_signout">Sign out</string>

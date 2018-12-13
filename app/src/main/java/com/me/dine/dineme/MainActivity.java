@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //our classes
+import com.me.dine.dineme.Activities.MyGroupsActivity;
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
@@ -88,9 +89,7 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
                     }
                     return true;
                 case R.id.navigation_dashboard:
-                    if(mMainUser != null){
-                        setUserHome();
-                    }
+                    startMyGroupActivity();
                     return true;
                 case R.id.navigation_events:
                     if(mMainUser != null){
@@ -214,5 +213,13 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
                     .load(mMainUser.getPhotoUrl())
                     .into(mImage);
         }
+    }
+
+    public void startMyGroupActivity(){
+        if(mMainUser == null) return;
+        // Go to the details page for the selected restaurant
+        Intent intent = new Intent(this, MyGroupsActivity.class);
+        intent.putExtra(MyGroupsActivity.KEY_OWNER_EMAIL, mMainUser.getEmail());
+        startActivity(intent);
     }
 }

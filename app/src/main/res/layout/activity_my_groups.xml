@@ -8,9 +8,10 @@
     tools:context=".Activities.MyGroupsActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="0dp">
 
         <ImageView
@@ -24,6 +25,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/group_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="8dp"
+            android:text="test"
+            app:layout_constraintBottom_toTopOf="@+id/user_description"
+            app:layout_constraintEnd_toStartOf="@+id/group_food"
+            app:layout_constraintTop_toBottomOf="@+id/group_image"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/group_description"
@@ -43,40 +58,68 @@
             android:id="@+id/group_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="@+id/group_food"
-            app:layout_constraintTop_toBottomOf="@+id/user_image"
-            tools:layout_editor_absoluteX="177dp" />
+            app:layout_constraintEnd_toStartOf="@+id/group_location"
+            app:layout_constraintTop_toBottomOf="@+id/group_image" />
 
         <TextView
             android:id="@+id/group_food"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="@+id/group_description"
             app:layout_constraintEnd_toStartOf="@+id/group_date"
-            app:layout_constraintTop_toBottomOf="@+id/user_description" />
+            app:layout_constraintTop_toBottomOf="@+id/group_image" />
 
         <TextView
             android:id="@+id/group_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="124dp"
+            android:layout_marginRight="124dp"
             android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="@+id/group_date"
-            app:layout_constraintStart_toEndOf="@+id/group_date"
-            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_image"
+            app:layout_constraintVertical_bias="1.0" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/noGroups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="196dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/create_group_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="28dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        tools:onClick="onCreateClicked" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

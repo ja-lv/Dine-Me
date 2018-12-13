@@ -9,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,13 +24,18 @@ import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.ViewModelFactory;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MyGroupsActivity extends AppCompatActivity {
 //    mBtmView.getMenu().findItem(R.id.action_yoga).setChecked(true);
+
+    public static final String KEY_OWNER_EMAIL = "ownerEmail";
 
     //info for firebase
     //sign in
@@ -38,25 +44,29 @@ public class MyGroupsActivity extends AppCompatActivity {
     MainViewModel mViewModel;
     User mMainUser;
     List<Group> mMyGroups;
+    Group mTestGroup;
 
     //butterknife group
-    @BindView(R.id.user_username)
-    TextView mUsername;
+    @BindView(R.id.group_owner)
+    TextView mOwner;
 
-    @BindView(R.id.user_description)
+    @BindView(R.id.group_description)
     TextView mDescription;
 
-    @BindView(R.id.user_age)
-    TextView mAge;
+    @BindView(R.id.group_date)
+    TextView mDate;
 
-    @BindView(R.id.user_food)
+    @BindView(R.id.group_food)
     TextView mFood;
 
-    @BindView(R.id.user_location)
+    @BindView(R.id.group_location)
     TextView mLocation;
 
-    @BindView(R.id.user_image)
+    @BindView(R.id.group_image)
     ImageView mImage;
+
+    @BindView(R.id.noGroups)
+    TextView mNoGroups;
 
     //nav listener
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -127,18 +137,32 @@ public class MyGroupsActivity extends AppCompatActivity {
         });
 
 //        mViewModel.getMyGroups();
+
+        setGroupInfo();
     }
 
     //user homepage
     public void setGroupInfo(){
-        mUsername.setText(mMainUser.getUsername());
-        mDescription.setText(mMainUser.getDescription());
-        mAge.setText(Integer.toString(mMainUser.getAge()));
+        //if my group is null, setup the dialog
+        if(mMyGroups == null){
+            mNoGroups.setText("No Groups available. Click the button to add.");
+            return;
+        }
+        else{
+            mNoGroups.setText("");
+        }
+
+        //Date
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+        mOwner.setText(mTestGroup.getOwnerEmail());
+        mDescription.setText(mTestGroup.getDescription());
+        mDate.setText(df.format(mTestGroup.getDate()));
         mFood.setText(mMainUser.getFoods().get(0));
         mLocation.setText(mMainUser.getLocation());
-        if(mMainUser.getPhotoUrl() != null){
+        if(mTestGroup.getImageUrl() != null){
             Picasso.get()
-                    .load(mMainUser.getPhotoUrl())
+                    .load(mTestGroup.getImageUrl())
                     .into(mImage);
         }
     }
@@ -152,5 +176,10 @@ public class MyGroupsActivity extends AppCompatActivity {
         FirebaseAuthUtils.firebaseAuthSignOut(this);
         mUser = null;
         finish();
+    }
+
+    @OnClick(R.id.create_group_btn)
+    public void onCreateClicked(View view) {
+        mNoGroups.setText("BUTTON CLICKED!!!!");
     }
 }
