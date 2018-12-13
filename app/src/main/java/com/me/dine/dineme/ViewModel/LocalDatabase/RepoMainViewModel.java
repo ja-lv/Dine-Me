@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
-import com.me.dine.dineme.ViewModel.DineMeRepository;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyEvent;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyGroup;

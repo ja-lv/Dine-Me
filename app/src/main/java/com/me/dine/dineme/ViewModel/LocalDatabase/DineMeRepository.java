@@ -1,4 +1,4 @@
-package com.me.dine.dineme.ViewModel;
+package com.me.dine.dineme.ViewModel.LocalDatabase;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;

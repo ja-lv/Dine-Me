@@ -13,15 +13,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.me.dine.dineme.R;
-import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
+import com.me.dine.dineme.ViewModel.Models.User;
 
 public class NewUserFragment extends DialogFragment{
     //the following will run after it is gets all user information
     public interface NewUserListener {
-        void onNewUser(DineMeMainUser mainUser);
+        void onNewUser(User mainUser);
     }
     private NewUserListener mNewUserListener;
 
@@ -67,14 +68,14 @@ public class NewUserFragment extends DialogFragment{
 
         FirebaseUser gUser =  FirebaseAuth.getInstance().getCurrentUser();
 
-        DineMeMainUser user = new DineMeMainUser(
+        User user = new User(
                 mUsername.getText().toString(),
                 gUser.getEmail(),
                 mDescription.getText().toString(),
                 Integer.parseInt(mAge.getText().toString()),
-                mFood.getText().toString(),
                 mLocation.getText().toString(),
-                gUser.getUid());
+                gUser.getPhotoUrl().toString(),
+                Lists.newArrayList(mFood.getText().toString()));
 
         if (mNewUserListener != null) {
             mNewUserListener.onNewUser(user);
