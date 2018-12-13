@@ -43,6 +43,8 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
 }
 
 //firebase

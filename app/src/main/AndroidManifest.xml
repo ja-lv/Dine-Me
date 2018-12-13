@@ -18,10 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:exported="false"
+            android:name=".ViewModel.Reminder.Notif.DineMeJob">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".ViewModel.Reminder.Notif.DineMeReminderIntentService"
+            android:exported="false"/>
 
-        <meta-data
+       <!-- <meta-data
             android:name="com.google.android.actions"
-            android:resource="@xml/news_notifications" />
+            android:resource="@xml/news_notifications" /> -->
     </application>
 
 </manifest>
