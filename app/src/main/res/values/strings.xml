@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="dineme_reminder_notification_title">News</string>
+    <string name="dineme_reminder_notification_body">There\'s new news!</string>
+    <string name="main_notification_channel_name">Primary</string>
 </resources>

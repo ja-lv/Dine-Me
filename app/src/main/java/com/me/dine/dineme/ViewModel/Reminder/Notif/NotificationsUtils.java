@@ -14,30 +14,31 @@ import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.content.ContextCompat;
 
 import com.me.dine.dineme.MainActivity;
+import com.me.dine.dineme.R;
 
 
 public class NotificationsUtils {
-    private static final int News_REMINDER_PENDING_INTENT_ID = 3417;
+    private static final int DINEME_REMINDER_PENDING_INTENT_ID = 3417;
     private static final int ACTION_IGNORE_PENDING_INTENT_ID = 14;
-    private static final String News_REMINDER_NOTIFICATION_CHANNEL_ID = "reminder_notification_channel";
+    private static final String DINEME_REMINDER_NOTIFICATION_CHANNEL_ID = "reminder_notification_channel";
     public static void clearAllNotifications (Context context) {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
 
-    public static void remindUsers(DineMeJob context) {
+    public static void remindUsers(Context context) {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel(
-                    News_REMINDER_NOTIFICATION_CHANNEL_ID,
+                    DINEME_REMINDER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.main_notification_channel_name),
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(mChannel);
         }
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,News_REMINDER_NOTIFICATION_CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,DINEME_REMINDER_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.dineme_notification)
                 .setLargeIcon(largeIcon(context))
@@ -50,40 +51,20 @@ public class NotificationsUtils {
                 .addAction(ignoreReminderAction(context))
                 .setAutoCancel(true);
 
-/*
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,News_REMINDER_NOTIFICATION_CHANNEL_ID)
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.dineme_notification)
-                .setLargeIcon(largeIcon(context))
-                .setContentTitle(context.getString(R.string.news_reminder_notification_title)) // new event
-                .setContentText(context.getString(R.string.news_reminder_notification_body)) //  new event
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        context.getString(R.string.news_reminder_notification_body))) //new event
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setContentIntent(contentIntent(context))
-                .addAction(ignoreReminderAction(context))
-                .setAutoCancel(true);
-
-
-
- */
-
-
     }
 
-    public static void remindUserReservation(DineMeJob context) {
+    public static void remindUserReservation(Context context) {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel(
-                    News_REMINDER_NOTIFICATION_CHANNEL_ID,
+                    DINEME_REMINDER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.main_notification_channel_name),
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(mChannel);
         }
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,News_REMINDER_NOTIFICATION_CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,DINEME_REMINDER_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.dineme_notification)
                 .setLargeIcon(largeIcon(context))
@@ -96,40 +77,21 @@ public class NotificationsUtils {
                 .addAction(ignoreReminderAction(context))
                 .setAutoCancel(true);
 
-/*
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,News_REMINDER_NOTIFICATION_CHANNEL_ID)
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.dineme_notification)
-                .setLargeIcon(largeIcon(context))
-                .setContentTitle(context.getString(R.string.news_reminder_notification_title)) // new event
-                .setContentText(context.getString(R.string.news_reminder_notification_body)) //  new event
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        context.getString(R.string.news_reminder_notification_body))) //new event
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setContentIntent(contentIntent(context))
-                .addAction(ignoreReminderAction(context))
-                .setAutoCancel(true);
-
-
-
- */
-
 
     }
 
-    public static void remindUsersSignUP(DineMeJob context) {
+    public static void remindUsersSignUP(Context context) {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel(
-                    News_REMINDER_NOTIFICATION_CHANNEL_ID,
+                    DINEME_REMINDER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.main_notification_channel_name),
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(mChannel);
         }
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,News_REMINDER_NOTIFICATION_CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,DINEME_REMINDER_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.dineme_notification)
                 .setLargeIcon(largeIcon(context))
@@ -163,7 +125,7 @@ public class NotificationsUtils {
         Intent startActivityIntent = new Intent(context, MainActivity.class);
         return PendingIntent.getActivity(
                 context,
-                News_REMINDER_PENDING_INTENT_ID,
+                DINEME_REMINDER_PENDING_INTENT_ID,
                 startActivityIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
