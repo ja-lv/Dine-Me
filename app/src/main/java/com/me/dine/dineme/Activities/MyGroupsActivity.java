@@ -1,48 +1,35 @@
-package com.me.dine.dineme;
+package com.me.dine.dineme.Activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-//gen java
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-//firebase auth and ui
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-//our classes
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
-import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
+import com.me.dine.dineme.R;
 import com.me.dine.dineme.ViewModel.MainViewModel;
+import com.me.dine.dineme.ViewModel.Models.Group;
 import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.ViewModelFactory;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NewUserFragment.NewUserListener {
+public class MyGroupsActivity extends AppCompatActivity {
+//    mBtmView.getMenu().findItem(R.id.action_yoga).setChecked(true);
 
     //info for firebase
     //sign in
@@ -50,11 +37,9 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
     FirebaseUser mUser;
     MainViewModel mViewModel;
     User mMainUser;
+    List<Group> mMyGroups;
 
-    //activity variables
-    private TextView mTextMessage;
-
-    //butterknife data
+    //butterknife group
     @BindView(R.id.user_username)
     TextView mUsername;
 
@@ -73,9 +58,7 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
     @BindView(R.id.user_image)
     ImageView mImage;
 
-    //dialogs
-    NewUserFragment mNewUserDialog;
-
+    //nav listener
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -84,17 +67,17 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if(mMainUser != null){
-                        setUserHome();
+                        setGroupInfo();
                     }
                     return true;
                 case R.id.navigation_dashboard:
                     if(mMainUser != null){
-                        setUserHome();
+                        setGroupInfo();
                     }
                     return true;
                 case R.id.navigation_events:
                     if(mMainUser != null){
-                        setUserHome();
+                        setGroupInfo();
                     }
                     return true;
                 case R.id.navigation_signout:
@@ -106,23 +89,14 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         }
     };
 
-    //on start
-    @Override
-    public void onStart() {
-        super.onStart();
+    //dialogs
+    NewUserFragment mNewUserDialog;
 
-        // Start sign in if necessary
-        if (FirebaseAuthUtils.shouldStartSignIn()) {
-            signIn();
-            return;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_my_groups);
         ButterKnife.bind(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -131,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         //init fragment
         mNewUserDialog = new NewUserFragment();
 
+        //set main user
         //set user
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -145,65 +120,17 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
                 // Update the cached copy of the words in the adapter.
                 mMainUser = mainUser;
                 if(mMainUser != null){
-                    setUserHome();
+//                    setUserHome();
                     Log.d("FBLoader", "OBSERRVED RUNNING DocumentSnapshot data 2: " + mainUser.getDescription());
                 }
             }
         });
 
-        //check if user is in database or not
-        mViewModel.getIsUserInDb().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable final String trueFalse) {
-                Log.d("FBLoader", "OBSERRVED STROLLIN: ");
-                if(trueFalse == "False") {
-                    mNewUserDialog.show(getSupportFragmentManager(), mNewUserDialog.TAG);
-                }
-            }
-        });
-    }
-
-    //firebase authenticate calls this
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mUser = FirebaseAuthUtils.getUserFromActivityResult(this, requestCode, resultCode, data);
-        loadModel();
-
-        Log.d("Model-check ", "");
-//        //create a user if there is no main user
-//        if(mUser != null){
-//            mNewUserDialog.show(getSupportFragmentManager(), mNewUserDialog.TAG);
-//        }
-//        else if(mUser != null){
-//            mTextMessage.setText("Your email is: " + mUser.getEmail());
-//        }
-    }
-
-    private void loadModel(){
-        mViewModel.setFirebaseUser(mUser);
-        mViewModel.loadUser();
-    }
-
-    private void signIn(){
-        FirebaseAuthUtils.firebaseAuthSignIn(this);
-    }
-
-    private void signOut(){
-        FirebaseAuthUtils.firebaseAuthSignOut(this);
-        mUser = null;
-        finish();
-    }
-
-    //setup dialog interface for new user
-    @Override
-    public void onNewUser(User newUser) {
-        //call the view model to initialize a new user
-        mViewModel.setUser(newUser);
+//        mViewModel.getMyGroups();
     }
 
     //user homepage
-    public void setUserHome(){
+    public void setGroupInfo(){
         mUsername.setText(mMainUser.getUsername());
         mDescription.setText(mMainUser.getDescription());
         mAge.setText(Integer.toString(mMainUser.getAge()));
@@ -214,5 +141,16 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
                     .load(mMainUser.getPhotoUrl())
                     .into(mImage);
         }
+    }
+
+    private void loadModel(){
+        mViewModel.setFirebaseUser(mUser);
+        mViewModel.loadUser();
+    }
+
+    private void signOut(){
+        FirebaseAuthUtils.firebaseAuthSignOut(this);
+        mUser = null;
+        finish();
     }
 }
