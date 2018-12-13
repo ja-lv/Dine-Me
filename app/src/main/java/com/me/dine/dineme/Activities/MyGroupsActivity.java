@@ -103,9 +103,6 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
         }
     };
 
-    //dialogs
-    NewUserFragment mNewUserDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +114,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //init fragment
-        mNewUserDialog = new NewUserFragment();
+        mNewGroupDialog = new NewGroupFragment();
 
         //set main user
         //set user
