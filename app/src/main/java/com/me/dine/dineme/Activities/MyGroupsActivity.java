@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.me.dine.dineme.GUtils.DialogFragments.NewGroupFragment;
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
 import com.me.dine.dineme.R;
@@ -32,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MyGroupsActivity extends AppCompatActivity {
+public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragment.NewGroupListener {
 //    mBtmView.getMenu().findItem(R.id.action_yoga).setChecked(true);
 
     public static final String KEY_OWNER_EMAIL = "ownerEmail";
@@ -67,6 +68,9 @@ public class MyGroupsActivity extends AppCompatActivity {
 
     @BindView(R.id.noGroups)
     TextView mNoGroups;
+
+    //dialogs
+    NewGroupFragment mNewGroupDialog;
 
     //nav listener
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -180,6 +184,11 @@ public class MyGroupsActivity extends AppCompatActivity {
 
     @OnClick(R.id.create_group_btn)
     public void onCreateClicked(View view) {
-        mNoGroups.setText("BUTTON CLICKED!!!!");
+        mNewGroupDialog.show(getSupportFragmentManager(), mNewGroupDialog.TAG);
+    }
+
+    @Override
+    public void onNewGroup(Group newGroup) {
+        mViewModel.setGroup(newGroup);
     }
 }

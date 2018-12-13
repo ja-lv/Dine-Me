@@ -13,12 +13,13 @@ public class Group {
     private String location;
 
     public Group(){};
-    public Group(String ownerEmail, String name, String description, Date date, String imageUrl, String location) {
+    public Group(String ownerEmail, String name, String description, Date date, String imageUrl,List<String> foods, String location) {
         this.ownerEmail = ownerEmail;
         this.name = name;
         this.description = description;
         this.date = date;
         this.imageUrl = imageUrl;
+        this.foods = foods;
         this.location = location;
     }
 

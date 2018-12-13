@@ -6,53 +6,44 @@
     android:padding="15dp">
 
     <TextView
-        android:id="@+id/new_user_setup"
+        android:id="@+id/new_group_setup"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="Welcome! Lets set your account."
+        android:text="@string/create_group_message"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <EditText
-        android:id="@+id/new_user_username"
+        android:id="@+id/new_group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Username"
-        android:inputType="textPersonName"
+        android:hint="Group Description"
+        android:inputType="textLongMessage" />
+
+    <EditText
+        android:id="@+id/new_group_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Group Description"
+        android:inputType="textLongMessage" />
+
+    <EditText
+        android:id="@+id/new_group_favorite_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="What food will be in it?"
+        android:inputType="textLongMessage"
         android:singleLine="true" />
 
     <EditText
-        android:id="@+id/new_user_description"
+        android:id="@+id/new_group_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Profile Description"
-        android:inputType="textLongMessage" />
-
-    <EditText
-        android:id="@+id/new_user_age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="Age"
-        android:inputType="number"
-        android:singleLine="false" />
-
-    <EditText
-        android:id="@+id/new_user_favorite_food"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="Favorite Food!"
-        android:inputType="textLongMessage" />
-
-    <EditText
-        android:id="@+id/new_user_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="Address (Location)"
+        android:hint="Base location of the group"
         android:inputType="textPostalAddress" />
 
     <LinearLayout
@@ -62,14 +53,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/new_user_cancel_signup"
+            android:id="@+id/new_group_cancel_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel" />
 
         <Button
-            android:id="@+id/new_user_confirm_signup"
+            android:id="@+id/new_group_confirm_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -9,33 +9,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.me.dine.dineme.R;
+import com.me.dine.dineme.ViewModel.Models.Group;
 import com.me.dine.dineme.ViewModel.Models.User;
 
-public class NewUserFragment extends DialogFragment{
+import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class NewGroupFragment extends DialogFragment {
+
     //the following will run after it is gets all user information
-    public interface NewUserListener {
-        void onNewUser(User mainUser);
+    public interface NewGroupListener {
+        void onNewGroup(Group newGroup);
     }
-    private NewUserListener mNewUserListener;
 
-    public static final String TAG = "UserDialog";
+    private NewGroupFragment.NewGroupListener mNewGroupListener;
 
-    @BindView(R.id.new_user_username)
-    EditText mUsername;
+    public static final String TAG = "GroupDialog";
 
-    @BindView(R.id.new_user_description)
+    public static final String DEFAULT_URL = "";
+
+    @BindView(R.id.new_group_name)
+    EditText mName;
+
+    @BindView(R.id.new_group_description)
     EditText mDescription;
-
-    @BindView(R.id.new_user_age)
-    EditText mAge;
 
     @BindView(R.id.new_user_favorite_food)
     EditText mFood;
@@ -47,8 +51,8 @@ public class NewUserFragment extends DialogFragment{
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof NewUserListener) {
-            mNewUserListener = (NewUserListener) context;
+        if (context instanceof NewGroupFragment.NewGroupListener) {
+            mNewGroupListener = (NewGroupFragment.NewGroupListener) context;
         }
     }
 
@@ -57,34 +61,34 @@ public class NewUserFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.dialog_new_user, container, false);
+        View v = inflater.inflate(R.layout.dialog_new_group, container, false);
         ButterKnife.bind(this, v);
 
         return v;
     }
 
-    @OnClick(R.id.new_user_confirm_signup)
+    @OnClick(R.id.new_group_confirm_signup)
     public void onSubmitClicked(View view) {
 
         FirebaseUser gUser =  FirebaseAuth.getInstance().getCurrentUser();
 
-        User user = new User(
-                mUsername.getText().toString(),
+        Group group = new Group(
                 gUser.getEmail(),
+                mName.getText().toString(),
                 mDescription.getText().toString(),
-                Integer.parseInt(mAge.getText().toString()),
-                mLocation.getText().toString(),
+                new Date(),
                 gUser.getPhotoUrl().toString(),
-                Lists.newArrayList(mFood.getText().toString()));
+                Lists.newArrayList(mFood.getText().toString()),
+                mLocation.getText().toString());
 
-        if (mNewUserListener != null) {
-            mNewUserListener.onNewUser(user);
+        if (mNewGroupListener != null) {
+            mNewGroupListener.onNewGroup(group);
         }
 
         dismiss();
     }
 
-    @OnClick(R.id.new_user_cancel_signup)
+    @OnClick(R.id.new_group_cancel_signup)
     public void onCancelClicked(View view) {
         dismiss();
     }

@@ -11,13 +11,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyEvent;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyGroup;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeRGroup;
+import com.me.dine.dineme.ViewModel.Models.Group;
 import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.Network.FirebaseAdapterCalls;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +35,7 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
     //set live data
     private MutableLiveData<User> mUser;
     private MutableLiveData<String> mIsUserInDb;
+    private MutableLiveData<List <Group>> mMyGroups;
 
     //actual data
     private User mMainUser;
@@ -121,5 +127,50 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
     public void onSetUser() {
         Log.d("FBLoader", "SET CALLLEDD ");
         loadUser();
+    }
+
+    //groups functions
+    public void setGroup(Group group){
+        //update firebase
+        mFirebaseAdapter.setGroup(group, this);
+    }
+
+    public LiveData<List<Group>> getMygroups() {
+        if (mMyGroups == null) {
+            mMyGroups = new MutableLiveData<List<Group>>();
+            loadMyGroups();
+        }
+        return mMyGroups;
+    }
+
+    public void loadMyGroups(){
+        Query ref = mFirebaseAdapter.getMyGroups();
+        if(ref == null){
+            mUser.postValue(null);
+            return;
+        }
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Group> tempGroups = new ArrayList<>();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        //set group data here, should had been uploaded to firestore
+//                        Group tempGroup = new document.toObject(Group.class);
+//                        tempGroups.add(tempGroup);
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onSetGroup() {
+        Log.d("FBLoader", "SET GROUP CALLLEDD ");
+        loadMyGroups();
     }
 }
