@@ -15,6 +15,8 @@ import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyGroup;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeRGroup;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DineMeRoomDB;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class DineMeRepository {
@@ -39,8 +41,7 @@ public class DineMeRepository {
         mMyEventsDao = db.myEventsDao();
 
         //initiate data, loads the first user
-        List<DineMeMainUser> mainUsers = mMainUserDao.loadAllMainUsers().getValue();
-        if(mainUsers != null) mMainUser = mMainUserDao.loadMainUser(mainUsers.get(0).getId());
+        mMainUser = getMainUser();
         mDineMeRGroups = mRGroupsDao.loadAllRGroups();
         mDineMeMyGroups = mMyGroupsDao.loadAllMyGroups();
         mDineMeMyEvents = mMyEventsDao.loadAllMyEvents();
@@ -49,7 +50,8 @@ public class DineMeRepository {
     //CRUD - Create, Read, Update, Delete
     //CREATE
     public void insertMainUser(DineMeMainUser mainUser){
-        mMainUserDao.insertMainUser(mainUser);
+        new insertMainUserAsyncTask(mMainUserDao).execute(mainUser);
+        mMainUser = getMainUser();
     }
     public void insertRGroups(List<DineMeRGroup> rGroups){
         mRGroupsDao.insertRGroups(rGroups);
@@ -61,8 +63,27 @@ public class DineMeRepository {
         mMyEventsDao.insertMyEvents(myEvents);
     }
 
+    //asynctasks CREATE here
+    private static class insertMainUserAsyncTask extends AsyncTask<DineMeMainUser, Void, Void> {
+        private MainUserDao mAsyncTaskDao;
+        insertMainUserAsyncTask(MainUserDao dao) {
+            mAsyncTaskDao = dao;
+        }
+        @Override
+        protected Void doInBackground(DineMeMainUser... mainUser) {
+            Log.d("test", "'message of : " + mainUser[0].getGmail());
+            mAsyncTaskDao.insertMainUser(mainUser[0]);
+            return null;
+        }
+    }
+
     //READ getters
-    public LiveData<DineMeMainUser> getMainUser(){ return mMainUser; }
+    public LiveData<DineMeMainUser> getMainUser(){
+        List<DineMeMainUser> mainUsers = mMainUserDao.loadAllMainUsers().getValue();
+        if(mainUsers != null) mMainUser = mMainUserDao.loadMainUser(mainUsers.get(0).getId());
+        else mMainUser = null;
+        return mMainUser;
+    }
     public LiveData<List<DineMeRGroup>> getRecommendedGroups(){ return mDineMeRGroups; }
     public LiveData<List<DineMeMyGroup>> getMyGroups(){ return mDineMeMyGroups;}
     public LiveData<List<DineMeMyEvent>> getMyEvents(){ return mDineMeMyEvents;}

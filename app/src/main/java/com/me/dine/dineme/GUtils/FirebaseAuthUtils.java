@@ -21,6 +21,10 @@ public class FirebaseAuthUtils {
     //sign in
     private static final int RC_SIGN_IN = 123;
 
+    public static boolean shouldStartSignIn() {
+        return (FirebaseAuth.getInstance().getCurrentUser() == null);
+    }
+
     public static void firebaseAuthSignIn(Activity activity){
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(new AuthUI.IdpConfig.GoogleBuilder().build());

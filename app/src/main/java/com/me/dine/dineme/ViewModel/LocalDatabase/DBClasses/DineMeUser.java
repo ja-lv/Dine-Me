@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 
-@Entity(tableName = "users")
+//@Entity(tableName = "users")
 public class DineMeUser {
     @PrimaryKey(autoGenerate = true)
     private int id;
