@@ -41,10 +41,10 @@ public class NewGroupFragment extends DialogFragment {
     @BindView(R.id.new_group_description)
     EditText mDescription;
 
-    @BindView(R.id.new_user_favorite_food)
+    @BindView(R.id.new_group_favorite_food)
     EditText mFood;
 
-    @BindView(R.id.new_user_location)
+    @BindView(R.id.new_group_location)
     EditText mLocation;
 
     @Override

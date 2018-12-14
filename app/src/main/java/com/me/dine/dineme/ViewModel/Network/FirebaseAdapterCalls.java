@@ -71,7 +71,7 @@ public class FirebaseAdapterCalls {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Log.d("DineMe Firebase", group.getFoods().toString());
-        db.collection(GROUP_COLLECTION).document(mFirebaseUser.getEmail())
+        db.collection(GROUP_COLLECTION).document()
                 .set(group)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

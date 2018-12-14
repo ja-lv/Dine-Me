@@ -156,7 +156,8 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
                 List<Group> tempGroups = new ArrayList<>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Log.d("FBLoader", "SETTING UP GROUPS!!!!");
+                        Log.d("FBLoader", document.getId() + " => " + document.getData().get("description"));
                         //set group data here, should had been uploaded to firestore
 //                        Group tempGroup = new document.toObject(Group.class);
 //                        tempGroups.add(tempGroup);
