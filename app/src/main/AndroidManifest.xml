@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name=".Activities.MyEventsActivity"
-            android:label="@string/title_my_groups">
+            android:label="@string/title_my_events">
         </activity>
     </application>
 

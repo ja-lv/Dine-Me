@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.me.dine.dineme.GUtils.DialogFragments.NewGroupFragment;
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
+import com.me.dine.dineme.GUtils.RecyclerAdapters.pop_groups_adapter;
 import com.me.dine.dineme.MainActivity;
 import com.me.dine.dineme.R;
 import com.me.dine.dineme.ViewModel.MainViewModel;
@@ -29,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -50,24 +54,24 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
     Group mTestGroup;
 
     //butterknife group
-    @BindView(R.id.group_owner)
-    TextView mOwner;
-
-    @BindView(R.id.group_description)
-    TextView mDescription;
-
-    @BindView(R.id.group_date)
-    TextView mDate;
-
-    @BindView(R.id.group_food)
-    TextView mFood;
-
-    @BindView(R.id.group_location)
-    TextView mLocation;
-
-    @BindView(R.id.group_image)
-    ImageView mImage;
-
+//    @BindView(R.id.group_owner)
+//    TextView mOwner;
+//
+//    @BindView(R.id.group_description)
+//    TextView mDescription;
+//
+//    @BindView(R.id.group_date)
+//    TextView mDate;
+//
+//    @BindView(R.id.group_food)
+//    TextView mFood;
+//
+//    @BindView(R.id.group_location)
+//    TextView mLocation;
+//
+//    @BindView(R.id.group_image)
+//    ImageView mImage;
+//
     @BindView(R.id.noGroups)
     TextView mNoGroups;
 
@@ -109,6 +113,9 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
     //navigation
     BottomNavigationView mNavigation;
 
+    //recycler view
+    private RecyclerView mRecyclerView;
+    private pop_groups_adapter mAdapter; // Popular groups
 
     @Override
     protected void onStart() {
@@ -135,6 +142,11 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
         //set user
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //setup recycler view
+        ArrayList<Group> groups = new ArrayList<>();
+        mRecyclerView = (RecyclerView)findViewById(R.id.popular_groups_recycler);
+        mAdapter = new pop_groups_adapter(getApplicationContext(),groups);
+
         //setup modelview
         mViewModel = ViewModelProviders.of(this, new ViewModelFactory(this.getApplication(), mUser)).get(MainViewModel.class);
         loadModel();
@@ -159,13 +171,19 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
                 // Update the cached copy of the words in the adapter.
                 if(groups != null){
                     mMyGroups = groups;
-                    mTestGroup = groups.get(0);
-                    if(mTestGroup != null) setGroupInfo();
+                    if(mMyGroups != null){
+                        mAdapter.setNewList(mMyGroups);
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
+                setGroupInfo();
             }
         });
 
         setGroupInfo();
+
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     //user homepage
@@ -179,19 +197,19 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
             mNoGroups.setText("");
         }
 
-        //Date
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-        mOwner.setText(mTestGroup.getOwnerEmail());
-        mDescription.setText(mTestGroup.getDescription());
-        mDate.setText(df.format(mTestGroup.getDate()));
-        mFood.setText(mTestGroup.getFoods().get(0));
-        mLocation.setText(mTestGroup.getLocation());
-        if(mTestGroup.getImageUrl() != null){
-            Picasso.get()
-                    .load(mTestGroup.getImageUrl())
-                    .into(mImage);
-        }
+//        //Date
+//        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+//
+//        mOwner.setText(mTestGroup.getOwnerEmail());
+//        mDescription.setText(mTestGroup.getDescription());
+//        mDate.setText(df.format(mTestGroup.getDate()));
+//        mFood.setText(mTestGroup.getFoods().get(0));
+//        mLocation.setText(mTestGroup.getLocation());
+//        if(mTestGroup.getImageUrl() != null){
+//            Picasso.get()
+//                    .load(mTestGroup.getImageUrl())
+//                    .into(mImage);
+//        }
     }
 
     private void loadModel(){
@@ -203,7 +221,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
     private void signOut(){
         FirebaseAuthUtils.firebaseAuthSignOut(this);
         mUser = null;
-        finish();
+        this.finishAffinity();;
     }
 
     @OnClick(R.id.create_group_btn)

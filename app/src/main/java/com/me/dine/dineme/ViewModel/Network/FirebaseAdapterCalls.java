@@ -158,4 +158,11 @@ public class FirebaseAdapterCalls {
 
         return db.collection(EVENT_COLLECTION).whereArrayContains("usersEmails", mFirebaseUser.getEmail());
     }
+
+    public Query getLatestEvents(){
+        if(mFirebaseUser == null) return null;
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(EVENT_COLLECTION).orderBy("date", Query.Direction.DESCENDING);
+    }
 }

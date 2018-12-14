@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.me.dine.dineme.GUtils.DialogFragments.NewEventFragment;
 import com.me.dine.dineme.GUtils.DialogFragments.NewGroupFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
+import com.me.dine.dineme.GUtils.RecyclerAdapters.EventRecyclerViewAdapter;
+import com.me.dine.dineme.GUtils.RecyclerAdapters.pop_groups_adapter;
 import com.me.dine.dineme.MainActivity;
 import com.me.dine.dineme.R;
 import com.me.dine.dineme.ViewModel.MainViewModel;
@@ -30,6 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -108,6 +113,10 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
     //dialogs
     NewEventFragment mNewEventDialog;
 
+    //recyclerviews
+    private RecyclerView mRecyclerView;
+    private EventRecyclerViewAdapter mAdapter;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -125,8 +134,10 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //init fragment
-//        mNewGroupDialog = new NewGroupFragment();
+        //recycler view
+        ArrayList<Event> events = new ArrayList<>();
+        mRecyclerView = (RecyclerView)findViewById(R.id.events_recyclerview);
+        mAdapter = new EventRecyclerViewAdapter(this, events);
 
         //set main user
         //set user
@@ -167,6 +178,8 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
                 // Update the cached copy of the words in the adapter.
                 if(events != null){
                     mMyEvents = events;
+                    mAdapter.setNewsList((ArrayList) events);
+                    mAdapter.notifyDataSetChanged();
                     mTestEvent = events.get(0);
                     if(mTestEvent != null) setEventInfo();
                 }
@@ -177,6 +190,9 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
 
         //init fragment
         mNewEventDialog = new NewEventFragment();
+
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void loadModel(){
@@ -197,17 +213,17 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
             mNoEvents.setText("");
         }
 
-        mOwner.setText(mTestEvent.getGroupName());
-        mDescription.setText(mTestEvent.getDescription());
-        mDate.setText(mTestEvent.getDate());
-        mFood.setText(mTestEvent.getFoods().get(0));
-        mLocation.setText(mTestEvent.getLocation());
-        if(mTestEvent.getImageUrl() != null){
-            Picasso.get()
-                    .load(mTestEvent.getImageUrl())
-                    .into(mImage);
-        }
-        mUserEmails.setText(mTestEvent.getUsersEmails().get(0));
+//        mOwner.setText(mTestEvent.getGroupName());
+//        mDescription.setText(mTestEvent.getDescription());
+//        mDate.setText(mTestEvent.getDate());
+//        mFood.setText(mTestEvent.getFoods().get(0));
+//        mLocation.setText(mTestEvent.getLocation());
+//        if(mTestEvent.getImageUrl() != null){
+//            Picasso.get()
+//                    .load(mTestEvent.getImageUrl())
+//                    .into(mImage);
+//        }
+//        mUserEmails.setText(mTestEvent.getUsersEmails().get(0));
     }
 
     @OnClick(R.id.create_event_btn)
@@ -218,7 +234,7 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
     private void signOut(){
         FirebaseAuthUtils.firebaseAuthSignOut(this);
         mUser = null;
-        finish();
+        this.finishAffinity();
     }
 
     public void startMyPageActivity(){

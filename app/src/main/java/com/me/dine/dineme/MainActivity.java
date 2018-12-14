@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 //gen java
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +38,10 @@ import com.me.dine.dineme.Activities.MyEventsActivity;
 import com.me.dine.dineme.Activities.MyGroupsActivity;
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
+import com.me.dine.dineme.GUtils.RecyclerAdapters.EventRecyclerViewAdapter;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
 import com.me.dine.dineme.ViewModel.MainViewModel;
+import com.me.dine.dineme.ViewModel.Models.Event;
 import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.ViewModelFactory;
 import com.squareup.picasso.Picasso;
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
     FirebaseUser mUser;
     MainViewModel mViewModel;
     User mMainUser;
+    List<Event> mLatestEvents;
 
     //activity variables
     private TextView mTextMessage;
@@ -107,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
     //navigation
     BottomNavigationView mNavigation;
 
+    //recyclerviews
+    private RecyclerView mRecyclerView;
+    private EventRecyclerViewAdapter mAdapter;
+
     //on start
     @Override
     public void onStart() {
@@ -139,6 +149,11 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         //set user
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //recycler view
+        ArrayList<Event> events = new ArrayList<>();
+        mRecyclerView = (RecyclerView)findViewById(R.id.latest_events_recycler);
+        mAdapter = new EventRecyclerViewAdapter(this, events);
+
         //setup modelview
         mViewModel = ViewModelProviders.of(this, new ViewModelFactory(this.getApplication(), mUser)).get(MainViewModel.class);
         loadModel();
@@ -146,12 +161,12 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         mViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User mainUser) {
-                Log.d("FBLoader", "OBSERRVED RUNNING RAAAAAAAAAAAAAAAAAAAA: ");
+//                Log.d("FBLoader", "OBSERRVED RUNNING RAAAAAAAAAAAAAAAAAAAA: ");
                 // Update the cached copy of the words in the adapter.
                 mMainUser = mainUser;
                 if(mMainUser != null){
                     setUserHome();
-                    Log.d("FBLoader", "OBSERRVED RUNNING DocumentSnapshot data 2: " + mainUser.getDescription());
+//                    Log.d("FBLoader", "OBSERRVED RUNNING DocumentSnapshot data 2: " + mainUser.getDescription());
                 }
             }
         });
@@ -160,12 +175,29 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         mViewModel.getIsUserInDb().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String trueFalse) {
-                Log.d("FBLoader", "OBSERRVED STROLLIN: ");
+//                Log.d("FBLoader", "OBSERRVED STROLLIN: ");
                 if(trueFalse == "False") {
                     mNewUserDialog.show(getSupportFragmentManager(), mNewUserDialog.TAG);
                 }
             }
         });
+
+        //check for recent events
+        mViewModel.getLatestEvents().observe(this,new Observer<List<Event>>() {
+            @Override
+            public void onChanged(@Nullable final List<Event> events) {
+                Log.d("FBLoader", "OBSERRVED RUNNING ON MY LATESSTS EVENTSS:~~~~ ");
+                // Update the cached copy of the words in the adapter.
+                if (events != null) {
+                    mLatestEvents = events;
+                    mAdapter.setNewsList((ArrayList) events);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     //firebase authenticate calls this
@@ -188,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
     private void loadModel(){
         mViewModel.setFirebaseUser(mUser);
         mViewModel.loadUser();
+        mViewModel.loadLatestEvents();
     }
 
     private void signIn(){
@@ -197,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
     private void signOut(){
         FirebaseAuthUtils.firebaseAuthSignOut(this);
         mUser = null;
-        finish();
+        this.finishAffinity();
     }
 
     //setup dialog interface for new user
@@ -209,11 +242,11 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
 
     //user homepage
     public void setUserHome(){
-        mUsername.setText(mMainUser.getUsername());
-        mDescription.setText(mMainUser.getDescription());
-        mAge.setText(Integer.toString(mMainUser.getAge()));
-        mFood.setText(mMainUser.getFoods().get(0));
-        mLocation.setText(mMainUser.getLocation());
+        mUsername.setText("username: " + mMainUser.getUsername());
+        mDescription.setText("Info: " +mMainUser.getDescription());
+        mAge.setText("Age: " +Integer.toString(mMainUser.getAge()));
+        mFood.setText("Favorite dishes: " + mMainUser.getFoods().get(0));
+        mLocation.setText("Location: " + mMainUser.getLocation());
         if(mMainUser.getPhotoUrl() != null){
             Picasso.get()
                     .load(mMainUser.getPhotoUrl())
