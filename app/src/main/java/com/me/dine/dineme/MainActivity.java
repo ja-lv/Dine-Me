@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         }
     };
 
+    //navigation
+    BottomNavigationView mNavigation;
+
     //on start
     @Override
     public void onStart() {
@@ -115,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
             signIn();
             return;
         }
+
+        mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mNavigation.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -124,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
 
         ButterKnife.bind(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //init fragment
         mNewUserDialog = new NewUserFragment();

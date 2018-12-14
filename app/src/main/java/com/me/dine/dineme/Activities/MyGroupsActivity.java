@@ -2,6 +2,7 @@ package com.me.dine.dineme.Activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.me.dine.dineme.GUtils.DialogFragments.NewGroupFragment;
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
+import com.me.dine.dineme.MainActivity;
 import com.me.dine.dineme.R;
 import com.me.dine.dineme.ViewModel.MainViewModel;
 import com.me.dine.dineme.ViewModel.Models.Group;
@@ -81,7 +83,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if(mMainUser != null){
-                        finishActivity();
+                        startMyPageActivity();
                     }
                     return true;
                 case R.id.navigation_dashboard:
@@ -104,14 +106,27 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
     };
 
 
+    //navigation
+    BottomNavigationView mNavigation;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mNavigation.getMenu().getItem(1).setChecked(true);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_groups);
         ButterKnife.bind(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //init fragment
         mNewGroupDialog = new NewGroupFragment();
@@ -145,7 +160,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
                 if(groups != null){
                     mMyGroups = groups;
                     mTestGroup = groups.get(0);
-                    setGroupInfo();
+                    if(mTestGroup != null) setGroupInfo();
                 }
             }
         });
@@ -170,8 +185,8 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
         mOwner.setText(mTestGroup.getOwnerEmail());
         mDescription.setText(mTestGroup.getDescription());
         mDate.setText(df.format(mTestGroup.getDate()));
-        mFood.setText(mMainUser.getFoods().get(0));
-        mLocation.setText(mMainUser.getLocation());
+        mFood.setText(mTestGroup.getFoods().get(0));
+        mLocation.setText(mTestGroup.getLocation());
         if(mTestGroup.getImageUrl() != null){
             Picasso.get()
                     .load(mTestGroup.getImageUrl())
@@ -198,5 +213,10 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
     @Override
     public void onNewGroup(Group newGroup) {
         mViewModel.setGroup(newGroup);
+    }
+
+    public void startMyPageActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
