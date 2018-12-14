@@ -7,4 +7,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_signout">Sign out</string>
     <string name="create_group_message">Let\'s make a new group!</string>
+    <string name="create_event_message">Let\'s make a new event!</string>
 </resources>

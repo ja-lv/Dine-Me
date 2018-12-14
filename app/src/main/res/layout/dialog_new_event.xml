@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/new_event_setup"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/create_event_message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <Spinner
+        android:id="@+id/new_event_options"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <EditText
+        android:id="@+id/new_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Event Name"
+        android:inputType="textLongMessage" />
+
+    <EditText
+        android:id="@+id/new_event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Event Description"
+        android:inputType="textLongMessage" />
+
+    <EditText
+        android:id="@+id/new_event_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Date of the Event"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/new_event_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="What food will be in it?"
+        android:inputType="textLongMessage"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/new_event_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Location of the event"
+        android:inputType="textPostalAddress" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/new_event_cancel_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/new_event_confirm_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirm" />
+    </LinearLayout>
+
+</LinearLayout>

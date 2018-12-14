@@ -197,6 +197,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
     private void loadModel(){
         mViewModel.setFirebaseUser(mUser);
         mViewModel.loadUser();
+        mViewModel.loadMyGroups();
     }
 
     private void signOut(){
