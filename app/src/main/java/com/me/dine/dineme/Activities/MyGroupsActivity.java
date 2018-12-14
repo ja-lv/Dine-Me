@@ -81,7 +81,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if(mMainUser != null){
-                        setGroupInfo();
+                        finishActivity();
                     }
                     return true;
                 case R.id.navigation_dashboard:
