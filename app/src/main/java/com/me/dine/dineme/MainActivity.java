@@ -17,9 +17,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.me.dine.dineme.ViewModel.Models.Event;
+import com.me.dine.dineme.ViewModel.Models.Group;
+
+import android.support.v7.widget.LinearLayoutManager;
+
+
 //gen java
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 //firebase auth and ui
@@ -39,11 +46,48 @@ import com.me.dine.dineme.ViewModel.MainViewModel;
 import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.ViewModelFactory;
 import com.squareup.picasso.Picasso;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import java.util.ArrayList;
+import android.support.v7.widget.RecyclerView;
+
+
+
+
 
 public class MainActivity extends AppCompatActivity implements NewUserFragment.NewUserListener {
+    Date date = new Date();
+    ArrayList<String> list;
+    Group jaimes = new Group("mark","jaime","jaime",date,"jaime",list,"jaime");
+    Group mark = new Group("mark","jaime","jaime",date,"jaime",list,"jaime");
+    Group jacob = new Group("mark","jaime","jaime",date,"jaime",list,"jaime");
+
+
+    private RecyclerView mRecyclerView;
+    private pop_groups_adapter mAdapter; // Populatr groups
+    private ArrayList<Group> groups = new ArrayList<>();// Popular groups Arraylist
+
+    {
+        groups.add(jaimes);
+        groups.add(mark);
+        groups.add(jacob);
+    }
+
+
+
+    //Events
+    Event test = new Event("", "", "",  date, "", 0, 0, 0, 0, "");
+    Event test1 = new Event("", "", "",  date, "", 0, 0, 0, 0, "");
+    Event test2 = new Event("", "", "",  date, "", 0, 0, 0, 0, "");
+
+    private RecyclerView eventRecyclerView; // Recycler View event
+    private EventRecyclerViewAdapter eventAdapter; // Event RecyclerView Adapater
+    private ArrayList<Event> events = new ArrayList<>(); // ArrayList of events
+
+
+
+
+
 
     //info for firebase
     //sign in
@@ -126,6 +170,22 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+        // Popular Groups
+        mRecyclerView = (RecyclerView)findViewById(R.id.popular_groups_recycler);
+        mAdapter = new pop_groups_adapter(this,groups);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        /*
+        // Events
+        eventRecyclerView = (RecyclerView)findViewById(R.id.events_recyclerview);
+        eventAdapter = new EventRecyclerViewAdapter(this, events);
+        eventRecyclerView.setAdapter(eventAdapter);
+        eventRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        */
+
 
         //init fragment
         mNewUserDialog = new NewUserFragment();

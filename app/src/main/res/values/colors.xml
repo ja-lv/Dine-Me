@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#F15A22</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="group_color">#19b5fe</color>
+    <color name="text_color">#ffffff</color>
+    <color name="orange_color">#F15A22</color>
+    <color name="event_color">#FFCB05</color>
 </resources>

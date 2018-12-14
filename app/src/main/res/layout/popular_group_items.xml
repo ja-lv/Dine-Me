@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginBottom="16dp"
+    android:background="@color/group_color">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="258dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        app:srcCompat="@drawable/rsz_lily_banse_365344_unsplash" />
+
+    <TextView
+        android:id="@+id/pop_groups_title"
+        android:layout_width="255dp"
+        android:layout_height="49dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView"
+        android:layout_marginStart="20dp"
+        android:text="Group title"
+        android:textSize="24dp"/>
+
+    <TextView
+        android:id="@+id/pop_groups_desc"
+        android:layout_width="255dp"
+        android:layout_height="49dp"
+        android:layout_alignStart="@+id/pop_groups_title"
+        android:layout_below="@+id/pop_groups_title"
+        android:text="description"
+        android:textSize="18dp" />
+
+    <ImageButton
+        android:id="@+id/add_img_Button"
+        android:layout_width="26dp"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@+id/pop_groups_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/icons8_plus_48" />
+</RelativeLayout>
