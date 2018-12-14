@@ -93,7 +93,7 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
                     return true;
                 case R.id.navigation_events:
                     if(mMainUser != null){
-                        setGroupInfo();
+                        startMyEventsActivity();
                     }
                     return true;
                 case R.id.navigation_signout:
@@ -218,6 +218,14 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
 
     public void startMyPageActivity(){
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void startMyEventsActivity(){
+        if(mMainUser == null) return;
+        // Go to the details page for the selected restaurant
+        Intent intent = new Intent(this, MyEventsActivity.class);
+        intent.putExtra(MyEventsActivity.KEY_USER_EMAIL, mMainUser.getEmail());
         startActivity(intent);
     }
 }

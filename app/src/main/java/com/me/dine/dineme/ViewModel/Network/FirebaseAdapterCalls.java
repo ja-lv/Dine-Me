@@ -11,6 +11,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
+import com.me.dine.dineme.ViewModel.Models.Event;
 import com.me.dine.dineme.ViewModel.Models.Group;
 import com.me.dine.dineme.ViewModel.Models.User;
 
@@ -22,11 +23,18 @@ public class FirebaseAdapterCalls {
     public interface FirebaseLoader {
         void onSetUser();
         void onSetGroup();
+        void onSetEvents();
     }
 
     //folder_tags
     public final String USER_COLLECTION = "users";
     public final String GROUP_COLLECTION = "groups";
+    public final String EVENT_COLLECTION = "events";
+    public final String EVENT_USERS_COLLECTION = "event_users";
+    //event id
+    public final String EVENT_USERS_EVENT_ID = "event_id";
+    public final String EVENT_USERS_USER_EMAIL = "user_email";
+
     public final String TAG = "firebase-adapter-logs";
 
 //    FirebaseFirestore mDb;
@@ -92,5 +100,62 @@ public class FirebaseAdapterCalls {
         if(mFirebaseUser == null) return null;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         return db.collection(GROUP_COLLECTION).whereEqualTo("ownerEmail", mFirebaseUser.getEmail());
+    }
+
+    //events
+    public void setEvent(Event event, final FirebaseLoader vm){
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Log.d("DineMe Firebase", event.getGroupName());
+        db.collection(EVENT_COLLECTION).document()
+                .set(event)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        vm.onSetEvents();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+//        Log.d(TAG, "DocumentSnapshot Event successfully written!");
+//
+//        //set hashmaps
+//        Map<String, Object> userEvent = new HashMap<>();
+//        userEvent.put(EVENT_USERS_EVENT_ID,documentReference.getId());
+//        userEvent.put(EVENT_USERS_USER_EMAIL,mFirebaseUser.getEmail());
+//
+//        db.collection(EVENT_USERS_COLLECTION).document()
+//                .set(userEvent)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d(TAG, "DocumentSnapshot successfully written!");
+//                        vm.onSetEvents();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error adding document", e);
+//                    }
+//                });
+    }
+
+//    public void getEventById(String eventId){
+//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        DocumentReference docRef = db.collection(EVENT_COLLECTION).document(eventId);
+//    }
+
+    public Query getMyEvents(){
+        if(mFirebaseUser == null) return null;
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(EVENT_COLLECTION).whereArrayContains("usersEmails", mFirebaseUser.getEmail());
     }
 }

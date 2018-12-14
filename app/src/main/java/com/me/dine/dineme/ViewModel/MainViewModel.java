@@ -18,6 +18,7 @@ import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMainUser;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyEvent;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeMyGroup;
 import com.me.dine.dineme.ViewModel.LocalDatabase.DBClasses.DineMeRGroup;
+import com.me.dine.dineme.ViewModel.Models.Event;
 import com.me.dine.dineme.ViewModel.Models.Group;
 import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.Network.FirebaseAdapterCalls;
@@ -37,6 +38,7 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
     private MutableLiveData<User> mUser;
     private MutableLiveData<String> mIsUserInDb;
     private MutableLiveData<List <Group>> mMyGroups;
+    private MutableLiveData<List <Event>> mMyEvents;
 
     //actual data
     private User mMainUser;
@@ -185,4 +187,63 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
         Log.d("FBLoader", "SET GROUP CALLLEDD ");
         loadMyGroups();
     }
+
+    //set events
+    //groups functions
+    public void setEvent(Event event){
+        //update firebase
+        mFirebaseAdapter.setEvent(event, this);
+    }
+
+    public void onSetEvents(){
+        loadMyEvents();
+    }
+
+    public LiveData<List<Event>> getMyEvents() {
+        if (mMyEvents == null) {
+            mMyEvents = new MutableLiveData<List<Event>>();
+            loadMyEvents();
+        }
+        return mMyEvents;
+    }
+
+    public void loadMyEvents(){
+        Query ref = mFirebaseAdapter.getMyEvents();
+        if(ref == null){
+            mMyEvents.postValue(null);
+            return;
+        }
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Event> tempEvents = new ArrayList<>();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("FBLoader", "SETTING UP EVENTS!!!!");
+                        Log.d("FBLoader", document.getId() + " => " + document.getData().get("description"));
+
+                        Event tempEvent = new Event(
+                                (String) document.getData().get("groupName"),
+                                (String) document.getData().get("name"),
+                                (String) document.getData().get("description"),
+                                (String) document.getData().get("date"),
+                                (String) document.getData().get("imageUrl"),
+                                (List<String>) document.getData().get("foods"),
+                                (String) document.getData().get("location"),
+                                (List<String>) document.getData().get("usersEmails")
+                        );
+                        //set group data here, should had been uploaded to firestore
+                        tempEvents.add(tempEvent);
+                        Log.d("FBLoader", document.getId() + " by!! => " + tempEvent.getGroupName());
+                    }
+                    mMyEvents.postValue(tempEvents);
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+    }
+
 }

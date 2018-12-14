@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //our classes
+import com.me.dine.dineme.Activities.MyEventsActivity;
 import com.me.dine.dineme.Activities.MyGroupsActivity;
 import com.me.dine.dineme.GUtils.DialogFragments.NewUserFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
@@ -89,12 +90,10 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
                     }
                     return true;
                 case R.id.navigation_dashboard:
-                    startMyGroupActivity();
+                    startMyGroupsActivity();
                     return true;
                 case R.id.navigation_events:
-                    if(mMainUser != null){
-                        setUserHome();
-                    }
+                    startMyEventsActivity();
                     return true;
                 case R.id.navigation_signout:
                     //sign us out
@@ -222,11 +221,19 @@ public class MainActivity extends AppCompatActivity implements NewUserFragment.N
         }
     }
 
-    public void startMyGroupActivity(){
+    public void startMyGroupsActivity(){
         if(mMainUser == null) return;
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, MyGroupsActivity.class);
         intent.putExtra(MyGroupsActivity.KEY_OWNER_EMAIL, mMainUser.getEmail());
+        startActivity(intent);
+    }
+
+    public void startMyEventsActivity(){
+        if(mMainUser == null) return;
+        // Go to the details page for the selected restaurant
+        Intent intent = new Intent(this, MyEventsActivity.class);
+        intent.putExtra(MyEventsActivity.KEY_USER_EMAIL, mMainUser.getEmail());
         startActivity(intent);
     }
 }

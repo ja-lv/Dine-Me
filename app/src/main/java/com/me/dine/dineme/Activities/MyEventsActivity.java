@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.me.dine.dineme.GUtils.DialogFragments.NewEventFragment;
 import com.me.dine.dineme.GUtils.DialogFragments.NewGroupFragment;
 import com.me.dine.dineme.GUtils.FirebaseAuthUtils;
 import com.me.dine.dineme.MainActivity;
@@ -35,7 +36,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MyEventActivity extends AppCompatActivity {
+public class MyEventsActivity extends AppCompatActivity implements NewEventFragment.NewEventListener {
+
+    public static final String KEY_USER_EMAIL = "userEmail";
 
     //info for firebase
     //sign in
@@ -45,6 +48,7 @@ public class MyEventActivity extends AppCompatActivity {
     User mMainUser;
     List<Event> mMyEvents;
     Event mTestEvent;
+    List<Group> mMyGroups;
 
     //butterknife group
     @BindView(R.id.event_groupname)
@@ -61,6 +65,9 @@ public class MyEventActivity extends AppCompatActivity {
 
     @BindView(R.id.event_location)
     TextView mLocation;
+
+    @BindView(R.id.event_users_emails)
+    TextView mUserEmails;
 
     @BindView(R.id.event_image)
     ImageView mImage;
@@ -97,6 +104,9 @@ public class MyEventActivity extends AppCompatActivity {
 
     //navigation
     BottomNavigationView mNavigation;
+
+    //dialogs
+    NewEventFragment mNewEventDialog;
 
     @Override
     protected void onStart() {
@@ -139,26 +149,41 @@ public class MyEventActivity extends AppCompatActivity {
             }
         });
 
-//        mViewModel.getMyGroups().observe(this, new Observer<List<Group>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<Group> groups) {
-//                Log.d("FBLoader", "OBSERRVED RUNNING ON MY GROUPSSS:~~~~ ");
-//                // Update the cached copy of the words in the adapter.
-//                if(groups != null){
-//                    mMyGroups = groups;
-//                    mTestGroup = groups.get(0);
-//                    if(mTestGroup != null) setGroupInfo();
-//                }
-//            }
-//        });
+        mViewModel.getMyGroups().observe(this, new Observer<List<Group>>() {
+            @Override
+            public void onChanged(@Nullable final List<Group> groups) {
+                Log.d("FBLoader", "OBSERRVED RUNNING ON MY GROUPSSS:~~~~ ");
+                // Update the cached copy of the words in the adapter.
+                if(groups != null){
+                    mMyGroups = groups;
+                }
+            }
+        });
+
+        mViewModel.getMyEvents().observe(this, new Observer<List<Event>>() {
+            @Override
+            public void onChanged(@Nullable final List<Event> events) {
+                Log.d("FBLoader", "OBSERRVED RUNNING ON MY EVENTSSSS:~~~~ ");
+                // Update the cached copy of the words in the adapter.
+                if(events != null){
+                    mMyEvents = events;
+                    mTestEvent = events.get(0);
+                    if(mTestEvent != null) setEventInfo();
+                }
+            }
+        });
 
         setEventInfo();
+
+        //init fragment
+        mNewEventDialog = new NewEventFragment();
     }
 
     private void loadModel(){
         mViewModel.setFirebaseUser(mUser);
         mViewModel.loadUser();
-//        mViewModel.loadMyEvents();
+        mViewModel.loadMyGroups();
+        mViewModel.loadMyEvents();
     }
 
     //user homepage
@@ -171,20 +196,18 @@ public class MyEventActivity extends AppCompatActivity {
         else{
             mNoEvents.setText("");
         }
-//
-//        //Date
-//        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-//
-//        mOwner.setText(mTestGroup.getOwnerEmail());
-//        mDescription.setText(mTestGroup.getDescription());
-//        mDate.setText(df.format(mTestGroup.getDate()));
-//        mFood.setText(mTestGroup.getFoods().get(0));
-//        mLocation.setText(mTestGroup.getLocation());
-//        if(mTestGroup.getImageUrl() != null){
-//            Picasso.get()
-//                    .load(mTestGroup.getImageUrl())
-//                    .into(mImage);
-//        }
+
+        mOwner.setText(mTestEvent.getGroupName());
+        mDescription.setText(mTestEvent.getDescription());
+        mDate.setText(mTestEvent.getDate());
+        mFood.setText(mTestEvent.getFoods().get(0));
+        mLocation.setText(mTestEvent.getLocation());
+        if(mTestEvent.getImageUrl() != null){
+            Picasso.get()
+                    .load(mTestEvent.getImageUrl())
+                    .into(mImage);
+        }
+        mUserEmails.setText(mTestEvent.getUsersEmails().get(0));
     }
 
     @OnClick(R.id.create_event_btn)
@@ -211,4 +234,13 @@ public class MyEventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public List<Group> getMyGroups() {
+        return mMyGroups;
+    }
+
+    @Override
+    public void onNewEvent(Event newEvent) {
+        mViewModel.setEvent(newEvent);
+    }
 }

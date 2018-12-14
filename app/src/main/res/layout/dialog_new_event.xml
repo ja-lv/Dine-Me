@@ -61,13 +61,6 @@
         android:hint="Location of the event"
         android:inputType="textPostalAddress" />
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
-
-    </RadioGroup>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

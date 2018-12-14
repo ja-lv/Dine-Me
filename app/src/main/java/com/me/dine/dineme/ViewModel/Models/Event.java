@@ -12,7 +12,7 @@ public class Event {
     private String groupName;
     private String name;
     private String description;
-    private Date date;
+    private String date;
     private String imageUrl;
 //    private int stars;
 //    private int starVotes;
@@ -20,12 +20,13 @@ public class Event {
 //    private int maxReservation;
     private List<String> foods;
     private String location;
+    private List<String> usersEmails;
 
     public Event(){}
 
 //    public Event(String groupName, String name, String description, Date date, String imageUrl, int stars, int starVotes, int minReservation, int maxReservation, List<String> foods, String location) {
 
-    public Event(String groupName, String name, String description, Date date, String imageUrl, List<String> foods, String location) {
+    public Event(String groupName, String name, String description, String date, String imageUrl, List<String> foods, String location, List<String> usersEmails) {
         this.groupName = groupName;
         this.name = name;
         this.description = description;
@@ -37,6 +38,7 @@ public class Event {
 //        this.maxReservation = maxReservation;
         this.foods = foods;
         this.location = location;
+        this.usersEmails = usersEmails;
     }
 
     public String getGroupName() {
@@ -63,11 +65,11 @@ public class Event {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -125,5 +127,13 @@ public class Event {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<String> getUsersEmails() {
+        return usersEmails;
+    }
+
+    public void setUsersEmails(List<String> usersEmails) {
+        this.usersEmails = usersEmails;
     }
 }
