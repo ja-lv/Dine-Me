@@ -56,27 +56,27 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
     List<Group> mMyGroups;
 
     //butterknife group
-    @BindView(R.id.event_groupname)
-    TextView mOwner;
-
-    @BindView(R.id.event_description)
-    TextView mDescription;
-
-    @BindView(R.id.event_date)
-    TextView mDate;
-
-    @BindView(R.id.event_food)
-    TextView mFood;
-
-    @BindView(R.id.event_location)
-    TextView mLocation;
-
-    @BindView(R.id.event_users_emails)
-    TextView mUserEmails;
-
-    @BindView(R.id.event_image)
-    ImageView mImage;
-
+//    @BindView(R.id.event_groupname)
+//    TextView mOwner;
+//
+//    @BindView(R.id.event_description)
+//    TextView mDescription;
+//
+//    @BindView(R.id.event_date)
+//    TextView mDate;
+//
+//    @BindView(R.id.event_food)
+//    TextView mFood;
+//
+//    @BindView(R.id.event_location)
+//    TextView mLocation;
+//
+//    @BindView(R.id.event_users_emails)
+//    TextView mUserEmails;
+//
+//    @BindView(R.id.event_image)
+//    ImageView mImage;
+//
     @BindView(R.id.no_events)
     TextView mNoEvents;
 
@@ -180,8 +180,7 @@ public class MyEventsActivity extends AppCompatActivity implements NewEventFragm
                     mMyEvents = events;
                     mAdapter.setNewsList((ArrayList) events);
                     mAdapter.notifyDataSetChanged();
-                    mTestEvent = events.get(0);
-                    if(mTestEvent != null) setEventInfo();
+                    if(mMyEvents != null) setEventInfo();
                 }
             }
         });
