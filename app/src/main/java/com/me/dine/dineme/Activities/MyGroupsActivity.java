@@ -137,7 +137,18 @@ public class MyGroupsActivity extends AppCompatActivity implements NewGroupFragm
             }
         });
 
-//        mViewModel.getMyGroups();
+        mViewModel.getMyGroups().observe(this, new Observer<List<Group>>() {
+            @Override
+            public void onChanged(@Nullable final List<Group> groups) {
+                Log.d("FBLoader", "OBSERRVED RUNNING ON MY GROUPSSS:~~~~ ");
+                // Update the cached copy of the words in the adapter.
+                if(groups != null){
+                    mMyGroups = groups;
+                    mTestGroup = groups.get(0);
+                    setGroupInfo();
+                }
+            }
+        });
 
         setGroupInfo();
     }

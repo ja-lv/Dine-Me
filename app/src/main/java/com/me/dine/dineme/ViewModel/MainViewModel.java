@@ -23,6 +23,7 @@ import com.me.dine.dineme.ViewModel.Models.User;
 import com.me.dine.dineme.ViewModel.Network.FirebaseAdapterCalls;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -135,7 +136,7 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
         mFirebaseAdapter.setGroup(group, this);
     }
 
-    public LiveData<List<Group>> getMygroups() {
+    public LiveData<List<Group>> getMyGroups() {
         if (mMyGroups == null) {
             mMyGroups = new MutableLiveData<List<Group>>();
             loadMyGroups();
@@ -146,7 +147,7 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
     public void loadMyGroups(){
         Query ref = mFirebaseAdapter.getMyGroups();
         if(ref == null){
-            mUser.postValue(null);
+            mMyGroups.postValue(null);
             return;
         }
 
@@ -158,10 +159,20 @@ public class MainViewModel extends AndroidViewModel implements FirebaseAdapterCa
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("FBLoader", "SETTING UP GROUPS!!!!");
                         Log.d("FBLoader", document.getId() + " => " + document.getData().get("description"));
+
+                        Group tempGroup = new Group(
+                                (String) document.getData().get("ownerEmail"),
+                                (String) document.getData().get("name"),
+                                (String) document.getData().get("description"),
+                                (Date) document.getData().get("date"),
+                                (String) document.getData().get("imageUrl"),
+                                (List<String>) document.getData().get("foods"),
+                                (String) document.getData().get("location")
+                                );
                         //set group data here, should had been uploaded to firestore
-//                        Group tempGroup = new document.toObject(Group.class);
-//                        tempGroups.add(tempGroup);
+                        tempGroups.add(tempGroup);
                     }
+                    mMyGroups.postValue(tempGroups);
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
